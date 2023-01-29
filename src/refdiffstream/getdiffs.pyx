@@ -10,3 +10,18 @@ def compare_strings(str s1, str s2):
             
     return index_list
     
+
+def count_Ns(str s):
+    cdef int i, N_count = 0
+    for i in range(len(s)):
+        if s[i] == "N":
+            N_count += 1
+    return N_count
+
+
+def count_gaps(str s):
+    cdef int i, gap_count = 0
+    for i in range(len(s)):
+        if s[i] == "-":
+            gap_count += 1
+    return gap_count

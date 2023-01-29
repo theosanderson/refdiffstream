@@ -16,7 +16,8 @@ names_so_far = set()
 
 def read_file(input_file, skip, queue2):
     stream = xopen.xopen(input_file, 'rb')
-    stream.seek(skip)
+    if skip:
+        stream.seek(skip)
     text_stream = TextIOWrapper(stream, encoding='utf-8')
     records = SeqIO.parse(text_stream, 'fasta')
     batch = []
@@ -32,7 +33,9 @@ def compare_strings_with_ref(ref_seq, record):
     other_seq = str(record.seq)
     other_seq = other_seq.upper()
     diffs = getdiffs.compare_strings(ref_seq, other_seq)
-    return (record.id, diffs)
+    ns = getdiffs.count_Ns(other_seq)
+    gaps = getdiffs.count_gaps(other_seq)
+    return (record.id, diffs, ns, gaps)
 
 
 
@@ -56,11 +59,11 @@ def main(reference_file, target_file, skip):
 
 
     for batch in queue_to_iterable(queue2):
-        executor = concurrent.futures.ThreadPoolExecutor(max_workers=10)
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=6)
         futures = [executor.submit(compare_strings_with_ref, ref_seq, record) for record in batch]
         for future in concurrent.futures.as_completed(futures):
-            name, diffs = future.result()
-            print(f"{name}\t{','.join([str(x) for x in diffs])}")
+            name, diffs, ns, gaps = future.result()
+            print(f"{name}\t{','.join([str(x) for x in diffs])}\t{ns}\t{gaps}")
         
 
 
