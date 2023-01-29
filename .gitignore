@@ -1,0 +1,13 @@
+**/__pycache__/**
+**.fa
+**.gz
+src/minimap2*
+src/sequences*
+.venv/**
+src/test.py
+src/refdiffstream.egg-info/dependency_links.txt
+src/refdiffstream.egg-info/entry_points.txt
+src/refdiffstream.egg-info/PKG-INFO
+src/refdiffstream.egg-info/requires.txt
+src/refdiffstream.egg-info/SOURCES.txt
+src/refdiffstream.egg-info/top_level.txt
